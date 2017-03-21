@@ -1,0 +1,101 @@
+drop table PAYMENT;
+drop table FARE;
+//drop table PREFERS;
+//drop table CAR_DRIVER;
+//drop table RATES;
+drop table INSURANCE;
+drop table CAR;
+drop table CUSTOMER;
+drop table DRIVER;
+drop table TAXI_BOOKING;
+
+create table CAR ( 
+REG_NO varchar(9) primary key, 
+MANUFACTURER varchar(15),
+YEAR_MFG date, 
+MODEL varchar(10),
+FUEL varchar(10) ,
+MILEAGE int,
+TYPE varchar(10),
+check (FUEL in ('PETROL','DIESEL')));
+
+create table INSURANCE(
+INSURANCENUM varchar(10) primary key,
+IDV int,
+PREMIUM int,
+EXPIRY date,
+INSUR_PROVIDER varchar(15), 
+REG_NO varchar(9),
+foreign key (REG_NO) references CAR);
+
+create table CUSTOMER(
+CUSTOMER_ID varchar(10) primary key,
+NAME varchar(15),
+ADDRESS varchar(15),
+PHONE int unique,
+DOB date,
+CARD_NO varchar (10) unique);
+
+create table DRIVER(
+DRIVER_ID varchar(10) primary key,
+NAME varchar(15),
+PHONE int unique, 
+AADHAR_ID int unique,
+DOB date,
+SEX varchar(10),
+LICENSE_NO varchar(10) unique,
+RATING int,
+check (SEX in ('MALE','FEMALE','OTHERS')),
+check (RATING>1 and RATING<10));
+
+create table FARE (
+BILL_NO int,
+TOTAL_AMOUNT int,
+TYPE varchar(10),
+DISTANCE int, 
+DURATION_MIN int, 
+CUSTOMER_ID varchar(10), 
+foreign key (CUSTOMER_ID) references CUSTOMER,
+primary key(BILL_NO);
+
+create table PAYMENT(
+CARD_NO varchar(10),
+PAYMENT_MODE varchar(10),
+RECEIPT_NO varchar(10),
+PAYMENT_DATE date,
+TOTAL_AMOUNT int,
+CUSTOMER_ID varchar(10),
+foreign key (CUSTOMER_ID) references CUSTOMER,
+primary key (RECEIPT_NO));
+
+//create table PREFERS(
+//CUSTOMER_ID varchar(10),
+//REG_NO varchar(9),
+//primary key (CUSTOMER_ID,REG_NO),
+//foreign key(CUSTOMER_ID) references CUSTOMER,
+//foreign key (REG_NO) references CAR);
+
+//create table CAR_DRIVER(
+//DRIVER_ID varchar(10),
+//REG_NO varchar(9),
+//primary key (DRIVER_ID,REG_NO),
+//foreign key (DRIVER_ID) references DRIVER,
+//foreign key (REG_NO) references CAR);
+
+//create table RATES(
+//CUSTOMER_ID varchar(10),
+//DRIVER_ID varchar(10),
+//primary key(CUSTOMER_ID,DRIVER_ID),
+//foreign key(CUSTOMER_ID) references CUSTOMER,
+//foreign key (DRIVER_ID) references DRIVER);
+
+create table TAXI_BOOKING(
+CUSTOMER_ID varchar(10),
+TYPE varchar(10),
+DISTANCE int, 
+DURATION_MIN int,
+foreign key(CUSTOMER_ID) references CUSTOMER);
+
+
+
+
